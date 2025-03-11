@@ -8,26 +8,30 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
-            background: linear-gradient(180deg, #fdf6e9 0%, #ffffff 100%);
-            color: #2c2c2c;
+            padding: 0;
+            background: linear-gradient(180deg, #2a2a2a 0%, #1f1f1f 100%);
+            color: #e0e0e0;
             overscroll-behavior: none;
             -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
         }
         .logo {
             font-size: 28px;
             font-weight: 700;
-            color: #d4a017;
+            color: #f0e68c;
             letter-spacing: 1px;
             animation: fadeIn 1s ease-in-out;
         }
         .description {
             font-size: 14px;
-            color: #666;
+            color: #b0b0b0;
             margin-top: 6px;
             font-weight: 400;
             animation: fadeIn 1.5s ease-in-out;
@@ -36,18 +40,24 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
         .progress-bar {
-            width: 100%;
+            width: 80%;
             height: 4px;
-            background-color: #e0e0e0;
+            background-color: #404040;
             border-radius: 2px;
-            margin: 0 auto 25px;
-            max-width: 300px;
+            margin: 0 auto 20px;
             overflow: hidden;
         }
         .progress {
             height: 100%;
-            background: #d4a017;
+            background: #f0e68c;
             width: 8.33%;
             transition: width 0.4s ease;
         }
@@ -55,8 +65,6 @@
             display: none;
             opacity: 0;
             transition: opacity 0.3s ease;
-            max-width: 400px;
-            margin: 0 auto;
         }
         .step.active {
             display: block;
@@ -71,12 +79,12 @@
             font-size: 18px;
             font-weight: 500;
             margin: 0 0 15px;
-            color: #333;
+            color: #e0e0e0;
             text-align: center;
         }
         button {
-            background: #d4a017;
-            color: white;
+            background: #f0e68c;
+            color: #2a2a2a;
             border: none;
             padding: 16px;
             margin: 8px 0;
@@ -88,30 +96,39 @@
             transition: background 0.3s ease, transform 0.2s ease;
         }
         button:hover {
-            background: #b88c14;
+            background: #e6d875;
         }
         button:active {
             transform: scale(0.98);
+        }
+        .back-btn {
+            background: #404040;
+            color: #e0e0e0;
+            margin-top: 10px;
+        }
+        .back-btn:hover {
+            background: #505050;
         }
         select, input[type="date"] {
             width: 100%;
             padding: 16px;
             margin: 8px 0;
             border-radius: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #505050;
             font-size: 16px;
-            background-color: #fff;
+            background-color: #333;
+            color: #e0e0e0;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
         }
         select {
-            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMTYuNDE0bC00LjI5My00LjI5M2MtLjM5MS0uMzkxLTEuMDIzLS4zOTEtMS40MTQgMCAuMzkxLjM5MS4zOTEgMS4wMjMgMCAxLjQxNGw1LjAwNyA1LjAwN2MuMzkxLjM5MSAxLjAyMy4zOTEgMS40MTQgMGw1LjAwNy01LjAwN2MuMzkxLS4zOTEuMzkxLTEuMDIzIDAtMS40MTQtLjM5MS0uMzkxLTEuMDIzLS4zOTEtMS40MTQgMGwtNC4I5MCA0LjI5M3oiIGZpbGw9IiM2NjYiLz48L3N2Zz4=') no-repeat right 15px center;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMTYuNDE0bC00LjI5My00LjI5M2MtLjM5MS0uMzkxLTEuMDIzLS4zOTEtMS40MTQgMCAuMzkxLjM5MS4zOTEgMS4wMjMgMCAxLjQxNGw1LjAwNyA1LjAwN2MuMzkxLjM5MSAxLjAyMy4zOTEgMS40MTQgMGw1LjAwNy01LjAwN2MuMzkxLS4zOTEuMzkxLTEuMDIzIDAtMS40MTQtLjM5MS0uMzkxLTEuMDIzLS4зOTEtMS40MTQgMGwtNC4yOTMgNC4yOTN6IiBmaWxsPSIjZTBlMGUwIi8+PC9zdmc+') no-repeat right 15px center;
             background-size: 18px;
         }
         .recommendation {
             font-size: 13px;
-            color: #777;
+            color: #a0a0a0;
             margin-top: 10px;
             text-align: center;
             font-style: italic;
@@ -119,10 +136,10 @@
         .history {
             margin-top: 20px;
             padding: 15px;
-            background-color: #fff;
+            background-color: #333;
             border-radius: 10px;
             font-size: 14px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
         @media (max-width: 400px) {
             .logo { font-size: 24px; }
@@ -137,108 +154,123 @@
         <div class="logo">PrimeEstate Group</div>
         <div class="description">Ваш надёжный партнёр по аренде жилья на Пхукете</div>
     </div>
-    <div class="progress-bar">
-        <div class="progress"></div>
-    </div>
+    <div class="content">
+        <div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
 
-    <!-- Шаг 1: Выбери язык -->
-    <div id="step1" class="step active">
-        <p id="lang-text">Выбери язык:</p>
-        <select id="lang">
-            <option value="ru">Русский</option>
-            <option value="en">English</option>
-        </select>
-        <button id="step1-btn">Далее</button>
-    </div>
+            <!-- Шаг 1: Выбери язык -->
+            <div id="step1" class="step active">
+                <p id="lang-text">Выбери язык:</p>
+                <select id="lang">
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                </select>
+                <button id="step1-btn">Далее</button>
+            </div>
 
-    <!-- Шаг 2: Выбери валюту -->
-    <div id="step2" class="step">
-        <p id="currency-text">Выбери валюту:</p>
-        <select id="currency">
-            <option value="THB">THB</option>
-            <option value="USD">USD</option>
-            <option value="RUB">RUB</option>
-        </select>
-        <button id="step2-btn">Далее</button>
-    </div>
+            <!-- Шаг 2: Выбери валюту -->
+            <div id="step2" class="step">
+                <p id="currency-text">Выбери валюту:</p>
+                <select id="currency">
+                    <option value="THB">THB</option>
+                    <option value="USD">USD</option>
+                    <option value="RUB">RUB</option>
+                </select>
+                <button id="step2-btn">Далее</button>
+                <button class="back-btn" onclick="showStep('step1')">Назад</button>
+            </div>
 
-    <!-- Шаг 3: Выбери тип жилья -->
-    <div id="step3" class="step">
-        <p id="type-text">Выбери тип жилья:</p>
-        <button onclick="selectOption('type', 'apartment', 'step4')">Квартира / Apartment</button>
-        <button onclick="selectOption('type', 'villa', 'step4')">Вилла / Villa</button>
-        <button onclick="selectOption('type', 'house', 'step4')">Дом / House</button>
-    </div>
+            <!-- Шаг 3: Выбери тип жилья -->
+            <div id="step3" class="step">
+                <p id="type-text">Выбери тип жилья:</p>
+                <button onclick="selectOption('type', 'apartment', 'step4')">Квартира / Apartment</button>
+                <button onclick="selectOption('type', 'villa', 'step4')">Вилла / Villa</button>
+                <button onclick="selectOption('type', 'house', 'step4')">Дом / House</button>
+                <button class="back-btn" onclick="showStep('step2')">Назад</button>
+            </div>
 
-    <!-- Шаг 4: Укажи даты поездки -->
-    <div id="step4" class="step">
-        <p id="dates-text">Укажи даты поездки:</p>
-        <input type="date" id="start_date" min="2025-03-11">
-        <input type="date" id="end_date" min="2025-03-12">
-        <button id="step4-btn">Далее</button>
-    </div>
+            <!-- Шаг 4: Укажи даты поездки -->
+            <div id="step4" class="step">
+                <p id="dates-text">Укажи даты поездки:</p>
+                <input type="date" id="start_date" min="2025-03-11">
+                <input type="date" id="end_date" min="2025-03-12">
+                <button id="step4-btn">Далее</button>
+                <button class="back-btn" onclick="showStep('step3')">Назад</button>
+            </div>
 
-    <!-- Шаг 5: Выбери бюджет (THB) -->
-    <div id="step5" class="step">
-        <p id="budget-text">Выбери бюджет (THB):</p>
-        <button onclick="selectOption('budget', '15000', 'step6')">До 15,000</button>
-        <button onclick="selectOption('budget', '30000', 'step6')">15,000-30,000</button>
-        <button onclick="selectOption('budget', '40000', 'step6')">30,000+</button>
-    </div>
+            <!-- Шаг 5: Выбери бюджет (THB) -->
+            <div id="step5" class="step">
+                <p id="budget-text">Выбери бюджет (THB):</p>
+                <button onclick="selectOption('budget', '15000', 'step6')">До 15,000</button>
+                <button onclick="selectOption('budget', '30000', 'step6')">15,000-30,000</button>
+                <button onclick="selectOption('budget', '40000', 'step6')">30,000+</button>
+                <button class="back-btn" onclick="showStep('step4')">Назад</button>
+            </div>
 
-    <!-- Шаг 6: Выбери район -->
-    <div id="step6" class="step">
-        <p id="area-text">Выбери район:</p>
-        <button onclick="selectOption('area', 'patong', 'step7')">Патонг / Patong</button>
-        <button onclick="selectOption('area', 'kata', 'step7')">Ката / Kata</button>
-        <button onclick="selectOption('area', 'karon', 'step7')">Карон / Karon</button>
-        <div id="area-recommendation" class="recommendation"></div>
-    </div>
+            <!-- Шаг 6: Выбери район -->
+            <div id="step6" class="step">
+                <p id="area-text">Выбери район:</p>
+                <button onclick="selectOption('area', 'patong', 'step7')">Патонг / Patong</button>
+                <button onclick="selectOption('area', 'kata', 'step7')">Ката / Kata</button>
+                <button onclick="selectOption('area', 'karon', 'step7')">Карон / Karon</button>
+                <div id="area-recommendation" class="recommendation"></div>
+                <button class="back-btn" onclick="showStep('step5')">Назад</button>
+            </div>
 
-    <!-- Шаг 7: Сколько спален? -->
-    <div id="step7" class="step">
-        <p id="bedrooms-text">Сколько спален?</p>
-        <button onclick="selectOption('bedrooms', '1', 'step8')">1 спальня / 1 bedroom</button>
-        <button onclick="selectOption('bedrooms', '2', 'step8')">2 спальни / 2 bedrooms</button>
-        <button onclick="selectOption('bedrooms', '3', 'step8')">3+ спальни / 3+ bedrooms</button>
-    </div>
+            <!-- Шаг 7: Сколько спален? -->
+            <div id="step7" class="step">
+                <p id="bedrooms-text">Сколько спален?</p>
+                <button onclick="selectOption('bedrooms', '1', 'step8')">1 спальня / 1 bedroom</button>
+                <button onclick="selectOption('bedrooms', '2', 'step8')">2 спальни / 2 bedrooms</button>
+                <button onclick="selectOption('bedrooms', '3', 'step8')">3+ спальни / 3+ bedrooms</button>
+                <button class="back-btn" onclick="showStep('step6')">Назад</button>
+            </div>
 
-    <!-- Шаг 8: Нужен бассейн? -->
-    <div id="step8" class="step">
-        <p id="pool-text">Нужен бассейн?</p>
-        <button onclick="selectOption('pool', 'yes', 'step9')">Да / Yes</button>
-        <button onclick="selectOption('pool', 'no', 'step9')">Нет / No</button>
-    </div>
+            <!-- Шаг 8: Нужен бассейн? -->
+            <div id="step8" class="step">
+                <p id="pool-text">Нужен бассейн?</p>
+                <button onclick="selectOption('pool', 'yes', 'step9')">Да / Yes</button>
+                <button onclick="selectOption('pool', 'no', 'step9')">Нет / No</button>
+                <button class="back-btn" onclick="showStep('step7')">Назад</button>
+            </div>
 
-    <!-- Шаг 9: Нужна кухня? -->
-    <div id="step9" class="step">
-        <p id="kitchen-text">Нужна кухня?</p>
-        <button onclick="selectOption('kitchen', 'yes', 'step10')">Да / Yes</button>
-        <button onclick="selectOption('kitchen', 'no', 'step10')">Нет / No</button>
-    </div>
+            <!-- Шаг 9: Нужна кухня? -->
+            <div id="step9" class="step">
+                <p id="kitchen-text">Нужна кухня?</p>
+                <button onclick="selectOption('kitchen', 'yes', 'step10')">Да / Yes</button>
+                <button onclick="selectOption('kitchen', 'no', 'step10')">Нет / No</button>
+                <button class="back-btn" onclick="showStep('step8')">Назад</button>
+            </div>
 
-    <!-- Шаг 10: Нужен кондиционер? -->
-    <div id="step10" class="step">
-        <p id="ac-text">Нужен кондиционер?</p>
-        <button onclick="selectOption('ac', 'yes', 'step11')">Да / Yes</button>
-        <button onclick="selectOption('ac', 'no', 'step11')">Нет / No</button>
-    </div>
+            <!-- Шаг 10: Нужен кондиционер? -->
+            <div id="step10" class="step">
+                <p id="ac-text">Нужен кондиционер?</p>
+                <button onclick="selectOption('ac', 'yes', 'step11')">Да / Yes</button>
+                <button onclick="selectOption('ac', 'no', 'step11')">Нет / No</button>
+                <button class="back-btn" onclick="showStep('step9')">Назад</button>
+            </div>
 
-    <!-- Шаг 11: Как далеко от пляжа? -->
-    <div id="step11" class="step">
-        <p id="beach-text">Как далеко от пляжа?</p>
-        <button onclick="selectOption('beach_dist', '300', 'step12')">До 300 м / Up to 300 m</button>
-        <button onclick="selectOption('beach_dist', '800', 'step12')">До 800 м / Up to 800 m</button>
-        <button onclick="selectOption('beach_dist', 'any', 'step12')">Любое / Any</button>
-    </div>
+            <!-- Шаг 11: Как далеко от пляжа? -->
+            <div id="step11" class="step">
+                <p id="beach-text">Как далеко от пляжа?</p>
+                <button onclick="selectOption('beach_dist', '300', 'step12')">До 300 м / Up to 300 m</button>
+                <button onclick="selectOption('beach_dist', '800', 'step12')">До 800 м / Up to 800 m</button>
+                <button onclick="selectOption('beach_dist', 'any', 'step12')">Любое / Any</button>
+                <button class="back-btn" onclick="showStep('step10')">Назад</button>
+            </div>
 
-    <!-- Шаг 12: Минимальный рейтинг? -->
-    <div id="step12" class="step">
-        <p id="rating-text">Минимальный рейтинг?</p>
-        <button onclick="selectOption('rating', '4.0', null, true)">4.0+</button>
-        <button onclick="selectOption('rating', '4.5', null, true)">4.5+</button>
-        <button onclick="selectOption('rating', '0', null, true)">Любой / Any</button>
-        <div id="history" class="history"></div>
+            <!-- Шаг 12: Минимальный рейтинг? -->
+            <div id="step12" class="step">
+                <p id="rating-text">Минимальный рейтинг?</p>
+                <button onclick="selectOption('rating', '4.0', null, true)">4.0+</button>
+                <button onclick="selectOption('rating', '4.5', null, true)">4.5+</button>
+                <button onclick="selectOption('rating', '0', null, true)">Любой / Any</button>
+                <div id="history" class="history"></div>
+                <button class="back-btn" onclick="showStep('step11')">Назад</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -249,7 +281,6 @@
         // Объект локализации
         const langText = {
             ru: {
-                title: "Поиск жилья на Пхукете",
                 lang: "Выбери язык:",
                 currency: "Выбери валюту:",
                 type: "Выбери тип жилья:",
@@ -263,12 +294,12 @@
                 beach: "Как далеко от пляжа?",
                 rating: "Минимальный рейтинг?",
                 next: "Далее",
+                back: "Назад",
                 areaRec: "Рекомендация: Патонг для тусовок, Ката для отдыха.",
                 history: "Последний поиск:",
                 desc: "Ваш надёжный партнёр по аренде жилья на Пхукете"
             },
             en: {
-                title: "Phuket Housing Search",
                 lang: "Choose language:",
                 currency: "Choose currency:",
                 type: "Choose housing type:",
@@ -282,6 +313,7 @@
                 beach: "How far from the beach?",
                 rating: "Minimum rating?",
                 next: "Next",
+                back: "Back",
                 areaRec: "Recommendation: Patong for parties, Kata for relaxation.",
                 history: "Last search:",
                 desc: "Your reliable partner for renting housing in Phuket"
@@ -316,7 +348,7 @@
             const nextStepElement = document.getElementById(stepId);
             if (nextStepElement) {
                 nextStepElement.classList.add("active");
-                currentStep++;
+                currentStep = parseInt(stepId.replace("step", ""));
                 document.querySelector(".progress").style.width = `${(currentStep / totalSteps) * 100}%`;
                 updateLanguage();
                 if (stepId === "step6") {
@@ -349,6 +381,9 @@
             document.getElementById("rating-text").textContent = langText[lang].rating;
             document.querySelectorAll("button[id$='-btn']").forEach(btn => {
                 btn.textContent = langText[lang].next;
+            });
+            document.querySelectorAll(".back-btn").forEach(btn => {
+                btn.textContent = langText[lang].back;
             });
         }
 
