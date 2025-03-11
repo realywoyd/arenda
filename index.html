@@ -6,73 +6,99 @@
     <title>Поиск жилья на Пхукете</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
+            padding: 15px;
+            background-color: #f0f2f5;
             color: #333;
+            overflow-x: hidden;
         }
         h1 {
-            font-size: 26px;
+            font-size: 24px;
             text-align: center;
-            color: #0088cc;
-            margin-bottom: 20px;
+            color: #1a73e8;
+            margin: 0 0 20px;
+            font-weight: 600;
         }
         .progress-bar {
             width: 100%;
-            height: 10px;
-            background-color: #ddd;
-            border-radius: 5px;
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
             margin-bottom: 20px;
             overflow: hidden;
         }
         .progress {
             height: 100%;
-            background-color: #0088cc;
+            background-color: #1a73e8;
             width: 8.33%;
-            transition: width 0.3s ease;
+            transition: width 0.3s ease-in-out;
         }
         .step {
             display: none;
+            animation: fadeIn 0.3s ease-in;
         }
         .step.active {
             display: block;
         }
+        p {
+            font-size: 18px;
+            margin: 0 0 15px;
+            color: #555;
+            font-weight: 500;
+        }
         button {
-            background-color: #0088cc;
+            background-color: #1a73e8;
             color: white;
             border: none;
-            padding: 12px;
-            margin: 5px 0;
+            padding: 14px;
+            margin: 8px 0;
             border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
             width: 100%;
-            font-size: 16px;
-            transition: background-color 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s ease, transform 0.1s ease;
         }
-        button:hover {
-            background-color: #006699;
+        button:hover, button:active {
+            background-color: #1557b0;
+            transform: scale(0.98);
         }
         select, input[type="date"] {
             width: 100%;
-            padding: 12px;
-            margin: 5px 0;
+            padding: 14px;
+            margin: 8px 0;
             border-radius: 8px;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             font-size: 16px;
+            background-color: #fff;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
         }
         .recommendation {
-            color: #666;
+            color: #777;
             font-size: 14px;
-            margin-top: 10px;
+            margin: 10px 0 0;
             font-style: italic;
         }
         .history {
             margin-top: 20px;
-            padding: 10px;
+            padding: 15px;
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            font-size: 14px;
+            color: #444;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 400px) {
+            h1 { font-size: 20px; }
+            p { font-size: 16px; }
+            button, select, input[type="date"] { font-size: 14px; padding: 12px; }
         }
     </style>
 </head>
@@ -84,7 +110,7 @@
 
     <!-- Шаг 1: Выбери язык -->
     <div id="step1" class="step active">
-        <p id="lang-text">Выбери язык:</p>
+        <p id="lang-text">🌍 Выбери язык:</p>
         <select id="lang">
             <option value="ru">Русский</option>
             <option value="en">English</option>
@@ -94,7 +120,7 @@
 
     <!-- Шаг 2: Выбери валюту -->
     <div id="step2" class="step">
-        <p id="currency-text">Выбери валюту:</p>
+        <p id="currency-text">💸 Выбери валюту:</p>
         <select id="currency">
             <option value="THB">THB</option>
             <option value="USD">USD</option>
@@ -105,7 +131,7 @@
 
     <!-- Шаг 3: Выбери тип жилья -->
     <div id="step3" class="step">
-        <p id="type-text">Выбери тип жилья:</p>
+        <p id="type-text">🏡 Выбери тип жилья:</p>
         <button onclick="selectOption('type', 'apartment', 'step4')">Квартира / Apartment</button>
         <button onclick="selectOption('type', 'villa', 'step4')">Вилла / Villa</button>
         <button onclick="selectOption('type', 'house', 'step4')">Дом / House</button>
@@ -113,7 +139,7 @@
 
     <!-- Шаг 4: Укажи даты поездки -->
     <div id="step4" class="step">
-        <p id="dates-text">Укажи даты поездки:</p>
+        <p id="dates-text">📅 Укажи даты поездки:</p>
         <input type="date" id="start_date" min="2025-03-11">
         <input type="date" id="end_date" min="2025-03-12">
         <button id="step4-btn">Далее</button>
@@ -121,7 +147,7 @@
 
     <!-- Шаг 5: Выбери бюджет (THB) -->
     <div id="step5" class="step">
-        <p id="budget-text">Выбери бюджет (THB):</p>
+        <p id="budget-text">💰 Выбери бюджет (THB):</p>
         <button onclick="selectOption('budget', '15000', 'step6')">До 15,000</button>
         <button onclick="selectOption('budget', '30000', 'step6')">15,000-30,000</button>
         <button onclick="selectOption('budget', '40000', 'step6')">30,000+</button>
@@ -129,7 +155,7 @@
 
     <!-- Шаг 6: Выбери район -->
     <div id="step6" class="step">
-        <p id="area-text">Выбери район:</p>
+        <p id="area-text">📍 Выбери район:</p>
         <button onclick="selectOption('area', 'patong', 'step7')">Патонг / Patong</button>
         <button onclick="selectOption('area', 'kata', 'step7')">Ката / Kata</button>
         <button onclick="selectOption('area', 'karon', 'step7')">Карон / Karon</button>
@@ -138,7 +164,7 @@
 
     <!-- Шаг 7: Сколько спален? -->
     <div id="step7" class="step">
-        <p id="bedrooms-text">Сколько спален?</p>
+        <p id="bedrooms-text">🛏️ Сколько спален?</p>
         <button onclick="selectOption('bedrooms', '1', 'step8')">1 спальня / 1 bedroom</button>
         <button onclick="selectOption('bedrooms', '2', 'step8')">2 спальни / 2 bedrooms</button>
         <button onclick="selectOption('bedrooms', '3', 'step8')">3+ спальни / 3+ bedrooms</button>
@@ -146,28 +172,28 @@
 
     <!-- Шаг 8: Нужен бассейн? -->
     <div id="step8" class="step">
-        <p id="pool-text">Нужен бассейн?</p>
+        <p id="pool-text">🏊 Нужен бассейн?</p>
         <button onclick="selectOption('pool', 'yes', 'step9')">Да / Yes</button>
         <button onclick="selectOption('pool', 'no', 'step9')">Нет / No</button>
     </div>
 
     <!-- Шаг 9: Нужна кухня? -->
     <div id="step9" class="step">
-        <p id="kitchen-text">Нужна кухня?</p>
+        <p id="kitchen-text">🍳 Нужна кухня?</p>
         <button onclick="selectOption('kitchen', 'yes', 'step10')">Да / Yes</button>
         <button onclick="selectOption('kitchen', 'no', 'step10')">Нет / No</button>
     </div>
 
     <!-- Шаг 10: Нужен кондиционер? -->
     <div id="step10" class="step">
-        <p id="ac-text">Нужен кондиционер?</p>
+        <p id="ac-text">❄️ Нужен кондиционер?</p>
         <button onclick="selectOption('ac', 'yes', 'step11')">Да / Yes</button>
         <button onclick="selectOption('ac', 'no', 'step11')">Нет / No</button>
     </div>
 
     <!-- Шаг 11: Как далеко от пляжа? -->
     <div id="step11" class="step">
-        <p id="beach-text">Как далеко от пляжа?</p>
+        <p id="beach-text">🌊 Как далеко от пляжа?</p>
         <button onclick="selectOption('beach_dist', '300', 'step12')">До 300 м / Up to 300 m</button>
         <button onclick="selectOption('beach_dist', '800', 'step12')">До 800 м / Up to 800 m</button>
         <button onclick="selectOption('beach_dist', 'any', 'step12')">Любое / Any</button>
@@ -175,7 +201,7 @@
 
     <!-- Шаг 12: Минимальный рейтинг? -->
     <div id="step12" class="step">
-        <p id="rating-text">Минимальный рейтинг?</p>
+        <p id="rating-text">⭐ Минимальный рейтинг?</p>
         <button onclick="selectOption('rating', '4.0', null, true)">4.0+</button>
         <button onclick="selectOption('rating', '4.5', null, true)">4.5+</button>
         <button onclick="selectOption('rating', '0', null, true)">Любой / Any</button>
@@ -191,38 +217,38 @@
         const langText = {
             ru: {
                 title: "Поиск жилья на Пхукете",
-                lang: "Выбери язык:",
-                currency: "Выбери валюту:",
-                type: "Выбери тип жилья:",
-                dates: "Укажи даты поездки:",
-                budget: "Выбери бюджет (THB):",
-                area: "Выбери район:",
-                bedrooms: "Сколько спален?",
-                pool: "Нужен бассейн?",
-                kitchen: "Нужна кухня?",
-                ac: "Нужен кондиционер?",
-                beach: "Как далеко от пляжа?",
-                rating: "Минимальный рейтинг?",
+                lang: "🌍 Выбери язык:",
+                currency: "💸 Выбери валюту:",
+                type: "🏡 Выбери тип жилья:",
+                dates: "📅 Укажи даты поездки:",
+                budget: "💰 Выбери бюджет (THB):",
+                area: "📍 Выбери район:",
+                bedrooms: "🛏️ Сколько спален?",
+                pool: "🏊 Нужен бассейн?",
+                kitchen: "🍳 Нужна кухня?",
+                ac: "❄️ Нужен кондиционер?",
+                beach: "🌊 Как далеко от пляжа?",
+                rating: "⭐ Минимальный рейтинг?",
                 next: "Далее",
-                areaRec: "Рекомендация: Патонг для тусовок, Ката для отдыха.",
+                areaRec: "Патонг — для тусовок, Ката — для отдыха.",
                 history: "Последний поиск:"
             },
             en: {
                 title: "Phuket Housing Search",
-                lang: "Choose language:",
-                currency: "Choose currency:",
-                type: "Choose housing type:",
-                dates: "Specify travel dates:",
-                budget: "Choose budget (THB):",
-                area: "Choose area:",
-                bedrooms: "How many bedrooms?",
-                pool: "Need a pool?",
-                kitchen: "Need a kitchen?",
-                ac: "Need air conditioning?",
-                beach: "How far from the beach?",
-                rating: "Minimum rating?",
+                lang: "🌍 Choose language:",
+                currency: "💸 Choose currency:",
+                type: "🏡 Choose housing type:",
+                dates: "📅 Specify travel dates:",
+                budget: "💰 Choose budget (THB):",
+                area: "📍 Choose area:",
+                bedrooms: "🛏️ How many bedrooms?",
+                pool: "🏊 Need a pool?",
+                kitchen: "🍳 Need a kitchen?",
+                ac: "❄️ Need air conditioning?",
+                beach: "🌊 How far from the beach?",
+                rating: "⭐ Minimum rating?",
                 next: "Next",
-                areaRec: "Recommendation: Patong for parties, Kata for relaxation.",
+                areaRec: "Patong for parties, Kata for relaxation.",
                 history: "Last search:"
             }
         };
