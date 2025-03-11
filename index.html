@@ -32,6 +32,7 @@
             padding: 20px;
             background: rgba(0, 0, 0, 0.5);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
         }
         .logo {
             font-size: 36px;
@@ -148,7 +149,7 @@
             appearance: none;
         }
         select {
-            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMTYuNDE0bC00LjI5My00LjI5M2MtLjM5MS0uMzkxLTEuMDIzLS4зOTEtMS40MTQgMCAuMzkxLjM5MS4зOTEgMS4wMjMgMCAxLjQxNGw1LjAwNyA1LjAwN2MuMzkxLjM5MSAxLjAyMy4зOTEgMS40MTQgMGw1LjAwNy01LjAwN2MuMzkxLS4зOTEuMzkxLTEuMDIzIDAtMS40MTQtLjM5MS0uMzkxLTEuMDIzLS4зOTEtMS40MTQgMGwtNC4yOTMgNC4yOTN6IiBmaWxsPSIjZTBlMGUwIi8+PC9zdmc+') no-repeat right 15px center;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI4IDI0Ij48cGF0aCBkPSJNMTIgMTYuNDE0bC00LjI5My00LjI5M2MtLjM5MS0uMzkxLTEuMDIzLS4зOTEtMS40MTQgMCAuMzkxLjM5MS4зOTEgMS4wMjMgMCAxLjQxNGw1LjAwNyA1LjAwN2MuMzkxLjM5MSAxLjAyMy4зOTEgMS40MTQgMGw1LjAwNy01LjAwN2MuMzkxLS4зOTEuMzkxLTEuMDIzIDAtMS40MTQtLjM5MS0uMzkxLTEuMDIzLS4зOTEtMS40MTQgMGwtNC4yOTMgNC4yOTN6IiBmaWxsPSIjZTBlMGUwIi8+PC9zdmc+') no-repeat right 15px center;
             background-size: 18px;
         }
         .recommendation {
@@ -224,11 +225,33 @@
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
+        .language-selector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        .flag {
+            width: 30px;
+            height: 20px;
+            background-size: cover;
+            border-radius: 4px;
+        }
+        .currency-abbr {
+            font-size: 16px;
+            color: #DAA520;
+            margin-top: 4px;
+        }
         @media (max-width: 400px) {
             .logo { font-size: 32px; }
             .description { font-size: 18px; }
             p { font-size: 22px; }
             button, select, input[type="date"] { font-size: 18px; padding: 14px; }
+            .flag { width: 24px; height: 16px; }
+            .currency-abbr { font-size: 14px; }
         }
     </style>
 </head>
@@ -236,6 +259,10 @@
     <div class="header">
         <div class="logo">PrimeEstate Group</div>
         <div class="description">Ваш надёжный партнёр по аренде жилья на Пхукете</div>
+        <div class="language-selector" onclick="toggleLanguageSelector()">
+            <div id="flag" class="flag" style="background-image: url('https://flagcdn.com/w40/ru.png');"></div>
+            <div id="currency-abbr" class="currency-abbr">₽</div>
+        </div>
     </div>
     <div class="content">
         <div>
@@ -434,14 +461,23 @@
             }
         };
 
+        // Настройки флагов и валют
+        const langFlags = {
+            ru: 'https://flagcdn.com/w40/ru.png',
+            en: 'https://flagcdn.com/w40/gb.png'
+        };
+        const currencySymbols = {
+            THB: '฿',
+            USD: '$',
+            RUB: '₽'
+        };
+
         // Функция выбора опции
         function selectOption(key, value, nextStepId, submit = false) {
             searchData[key] = value;
             if (submit) {
                 searchData.lang = document.getElementById("lang").value;
                 searchData.currency = document.getElementById("currency").value;
-                searchData.start_date = document.getElementById("start_date").value.replace(/-/g, ".");
-                searchData.end_date = document.getElementById("end_date").value.replace(/-/g, ".");
                 if (!searchData.start_date || !searchData.end_date || new Date(searchData.end_date) <= new Date(searchData.start_date)) {
                     alert(searchData.lang === "ru" ? "Укажи корректные даты!" : "Enter valid dates!");
                     return;
@@ -476,9 +512,10 @@
             }
         }
 
-        // Обновление языка
+        // Обновление языка и валюты
         function updateLanguage() {
             const lang = document.getElementById("lang").value;
+            const currency = document.getElementById("currency").value;
             document.querySelector(".logo").textContent = "PrimeEstate Group";
             document.querySelector(".description").textContent = langText[lang].desc;
             document.getElementById("lang-text").textContent = langText[lang].lang;
@@ -499,6 +536,9 @@
             document.querySelectorAll(".back-btn").forEach(btn => {
                 btn.textContent = langText[lang].back;
             });
+            // Обновление флага и валюты
+            document.getElementById("flag").style.backgroundImage = `url('${langFlags[lang]}')`;
+            document.getElementById("currency-abbr").textContent = currencySymbols[currency];
         }
 
         // Показ истории поиска
@@ -513,11 +553,49 @@
             }
         }
 
+        // Переключение на шаг выбора языка
+        function toggleLanguageSelector() {
+            showStep("step1");
+        }
+
+        // Сохранение и загрузка настроек пользователя
+        function saveUserSettings() {
+            const userId = Telegram.WebApp.initDataUnsafe.user?.id;
+            if (userId) {
+                const settings = {
+                    lang: document.getElementById("lang").value,
+                    currency: document.getElementById("currency").value
+                };
+                localStorage.setItem(`user_${userId}_settings`, JSON.stringify(settings));
+            }
+        }
+
+        function loadUserSettings() {
+            const userId = Telegram.WebApp.initDataUnsafe.user?.id;
+            if (userId) {
+                const savedSettings = localStorage.getItem(`user_${userId}_settings`);
+                if (savedSettings) {
+                    const { lang, currency } = JSON.parse(savedSettings);
+                    document.getElementById("lang").value = lang;
+                    document.getElementById("currency").value = currency;
+                    updateLanguage();
+                    // Если настройки уже есть, пропускаем первые шаги
+                    showStep("step3");
+                    return true;
+                }
+            }
+            return false;
+        }
+
         // Инициализация кнопок
         document.getElementById("step1-btn").addEventListener("click", function() {
+            updateLanguage();
+            saveUserSettings();
             showStep("step2");
         });
         document.getElementById("step2-btn").addEventListener("click", function() {
+            updateLanguage();
+            saveUserSettings();
             showStep("step3");
         });
         document.getElementById("step4-btn").addEventListener("click", function() {
@@ -529,7 +607,12 @@
         Telegram.WebApp.expand();
         Telegram.WebApp.MainButton.hide();
         document.getElementById("lang").addEventListener("change", updateLanguage);
-        updateLanguage();
+        document.getElementById("currency").addEventListener("change", updateLanguage);
+
+        // Проверка сохраненных настроек при запуске
+        if (!loadUserSettings()) {
+            updateLanguage(); // Инициализация для первого запуска
+        }
 
         // Инициализация карты
         const map = L.map('map').setView([7.8804, 98.3923], 12);
