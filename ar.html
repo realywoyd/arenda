@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск жилья на Пхукете</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            color: #0088cc;
+        }
+        .step {
+            display: none;
+            margin-bottom: 20px;
+        }
+        .step.active {
+            display: block;
+        }
+        button {
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #006699;
+        }
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Поиск жилья на Пхукете</h1>
+
+    <!-- Шаг 1: Тип жилья -->
+    <div id="step1" class="step active">
+        <p>Выбери тип жилья:</p>
+        <button onclick="selectOption('type', 'apartment', 'step2')">Квартира</button>
+        <button onclick="selectOption('type', 'villa', 'step2')">Вилла</button>
+        <button onclick="selectOption('type', 'house', 'step2')">Дом</button>
+    </div>
+
+    <!-- Шаг 2: Даты -->
+    <div id="step2" class="step">
+        <p>Укажи даты поездки:</p>
+        <input type="date" id="start_date" min="2025-03-11">
+        <input type="date" id="end_date" min="2025-03-12">
+        <button onclick="nextStep('step2', 'step3')">Далее</button>
+    </div>
+
+    <!-- Шаг 3: Бюджет -->
+    <div id="step3" class="step">
+        <p>Выбери бюджет (THB):</p>
+        <button onclick="selectOption('budget', '15000', 'step4')">До 15,000</button>
+        <button onclick="selectOption('budget', '30000', 'step4')">15,000-30,000</button>
+        <button onclick="selectOption('budget', '40000', 'step4')">30,000+</button>
+    </div>
+
+    <!-- Шаг 4: Район -->
+    <div id="step4" class="step">
+        <p>Выбери район:</p>
+        <button onclick="selectOption('area', 'patong', null, true)">Патонг</button>
+        <button onclick="selectOption('area', 'kata', null, true)">Ката</button>
+        <button onclick="selectOption('area', 'karon', null, true)">Карон</button>
+    </div>
+
+    <script>
+        let searchData = {};
+
+        function selectOption(key, value, nextStepId, submit = false) {
+            searchData[key] = value;
+            if (submit) {
+                searchData.start_date = document.getElementById("start_date").value.replace(/-/g, ".");
+                searchData.end_date = document.getElementById("end_date").value.replace(/-/g, ".");
+                Telegram.WebApp.sendData(JSON.stringify(searchData));
+                Telegram.WebApp.close();
+            } else {
+                nextStep(nextStepId);
+            }
+        }
+
+        function nextStep(currentStepId, nextStepId) {
+            document.getElementById(currentStepId).classList.remove("active");
+            document.getElementById(nextStepId).classList.add("active");
+        }
+
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+        Telegram.WebApp.MainButton.hide();
+    </script>
+</body>
+</html>
