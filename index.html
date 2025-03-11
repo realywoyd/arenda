@@ -5,18 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PrimeEstate Group - Поиск жилья на Пхукете</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Great Vibes', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+            background: linear-gradient(-45deg, #1a1a1a, #0f0f0f, #1a1a1a, #0f0f0f);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: #e0e0e0;
             overscroll-behavior: none;
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         .header {
             text-align: center;
@@ -28,17 +36,17 @@
             font-size: 36px;
             color: #DAA520;
             letter-spacing: 1.5px;
-            animation: fadeIn 1s ease-in-out;
+            animation: breathe 3s ease-in-out infinite;
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
         .description {
             font-size: 20px;
             color: #b0b0b0;
             margin-top: 6px;
             animation: fadeIn 1.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         .content {
             flex: 1;
@@ -55,32 +63,39 @@
             margin: 0 auto 20px;
             overflow: hidden;
             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
         .progress {
             height: 100%;
             background: linear-gradient(90deg, #DAA520, #FFD700);
             width: 8.33%;
             transition: width 0.4s ease;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
         .step {
             display: none;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
         .step.active {
             display: block;
             opacity: 1;
-            animation: slideIn 0.3s ease;
+            animation: slideIn 0.5s ease;
         }
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         p {
             font-size: 24px;
             margin: 0 0 15px;
-            color: #e0e0e0;
+            color: #f0f0f0;
             text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
         button {
             background: linear-gradient(135deg, #DAA520, #FFD700);
@@ -94,13 +109,19 @@
             font-size: 20px;
             box-shadow: 0 4px 15px rgba(218, 165, 32, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.3);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
         }
         button:hover {
+            transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(218, 165, 32, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.4);
         }
         button:active {
             transform: scale(0.98);
             box-shadow: 0 2px 10px rgba(218, 165, 32, 0.2);
+        }
+        button i {
+            margin-right: 10px;
         }
         .back-btn {
             background: linear-gradient(135deg, #333, #252525);
@@ -165,7 +186,7 @@
 
             <!-- Шаг 1: Выбери язык -->
             <div id="step1" class="step active">
-                <p id="lang-text">Выбери язык:</p>
+                <p id="lang-text"><i class="fas fa-globe"></i> Выбери язык:</p>
                 <select id="lang">
                     <option value="ru">Русский</option>
                     <option value="en">English</option>
@@ -175,7 +196,7 @@
 
             <!-- Шаг 2: Выбери валюту -->
             <div id="step2" class="step">
-                <p id="currency-text">Выбери валюту:</p>
+                <p id="currency-text"><i class="fas fa-coins"></i> Выбери валюту:</p>
                 <select id="currency">
                     <option value="THB">THB</option>
                     <option value="USD">USD</option>
@@ -187,16 +208,16 @@
 
             <!-- Шаг 3: Выбери тип жилья -->
             <div id="step3" class="step">
-                <p id="type-text">Выбери тип жилья:</p>
-                <button onclick="selectOption('type', 'apartment', 'step4')">Квартира / Apartment</button>
-                <button onclick="selectOption('type', 'villa', 'step4')">Вилла / Villa</button>
-                <button onclick="selectOption('type', 'house', 'step4')">Дом / House</button>
+                <p id="type-text"><i class="fas fa-home"></i> Выбери тип жилья:</p>
+                <button onclick="selectOption('type', 'apartment', 'step4')"><i class="fas fa-building"></i> Квартира / Apartment</button>
+                <button onclick="selectOption('type', 'villa', 'step4')"><i class="fas fa-umbrella-beach"></i> Вилла / Villa</button>
+                <button onclick="selectOption('type', 'house', 'step4')"><i class="fas fa-house-user"></i> Дом / House</button>
                 <button class="back-btn" onclick="showStep('step2')">Назад</button>
             </div>
 
             <!-- Шаг 4: Укажи даты поездки -->
             <div id="step4" class="step">
-                <p id="dates-text">Укажи даты поездки:</p>
+                <p id="dates-text"><i class="fas fa-calendar-alt"></i> Укажи даты поездки:</p>
                 <input type="date" id="start_date" min="2025-03-11">
                 <input type="date" id="end_date" min="2025-03-12">
                 <button id="step4-btn">Далее</button>
@@ -205,7 +226,7 @@
 
             <!-- Шаг 5: Выбери бюджет (THB) -->
             <div id="step5" class="step">
-                <p id="budget-text">Выбери бюджет (THB):</p>
+                <p id="budget-text"><i class="fas fa-wallet"></i> Выбери бюджет (THB):</p>
                 <button onclick="selectOption('budget', '15000', 'step6')">До 15,000</button>
                 <button onclick="selectOption('budget', '30000', 'step6')">15,000-30,000</button>
                 <button onclick="selectOption('budget', '40000', 'step6')">30,000+</button>
@@ -214,17 +235,17 @@
 
             <!-- Шаг 6: Выбери район -->
             <div id="step6" class="step">
-                <p id="area-text">Выбери район:</p>
-                <button onclick="selectOption('area', 'patong', 'step7')">Патонг / Patong</button>
-                <button onclick="selectOption('area', 'kata', 'step7')">Ката / Kata</button>
-                <button onclick="selectOption('area', 'karon', 'step7')">Карон / Karon</button>
+                <p id="area-text"><i class="fas fa-map-marker-alt"></i> Выбери район:</p>
+                <button onclick="selectOption('area', 'patong', 'step7')"><i class="fas fa-cocktail"></i> Патонг / Patong</button>
+                <button onclick="selectOption('area', 'kata', 'step7')"><i class="fas fa-umbrella-beach"></i> Ката / Kata</button>
+                <button onclick="selectOption('area', 'karon', 'step7')"><i class="fas fa-sun"></i> Карон / Karon</button>
                 <div id="area-recommendation" class="recommendation"></div>
                 <button class="back-btn" onclick="showStep('step5')">Назад</button>
             </div>
 
             <!-- Шаг 7: Сколько спален? -->
             <div id="step7" class="step">
-                <p id="bedrooms-text">Сколько спален?</p>
+                <p id="bedrooms-text"><i class="fas fa-bed"></i> Сколько спален?</p>
                 <button onclick="selectOption('bedrooms', '1', 'step8')">1 спальня / 1 bedroom</button>
                 <button onclick="selectOption('bedrooms', '2', 'step8')">2 спальни / 2 bedrooms</button>
                 <button onclick="selectOption('bedrooms', '3', 'step8')">3+ спальни / 3+ bedrooms</button>
@@ -233,7 +254,7 @@
 
             <!-- Шаг 8: Нужен бассейн? -->
             <div id="step8" class="step">
-                <p id="pool-text">Нужен бассейн?</p>
+                <p id="pool-text"><i class="fas fa-swimming-pool"></i> Нужен бассейн?</p>
                 <button onclick="selectOption('pool', 'yes', 'step9')">Да / Yes</button>
                 <button onclick="selectOption('pool', 'no', 'step9')">Нет / No</button>
                 <button class="back-btn" onclick="showStep('step7')">Назад</button>
@@ -241,7 +262,7 @@
 
             <!-- Шаг 9: Нужна кухня? -->
             <div id="step9" class="step">
-                <p id="kitchen-text">Нужна кухня?</p>
+                <p id="kitchen-text"><i class="fas fa-utensils"></i> Нужна кухня?</p>
                 <button onclick="selectOption('kitchen', 'yes', 'step10')">Да / Yes</button>
                 <button onclick="selectOption('kitchen', 'no', 'step10')">Нет / No</button>
                 <button class="back-btn" onclick="showStep('step8')">Назад</button>
@@ -249,7 +270,7 @@
 
             <!-- Шаг 10: Нужен кондиционер? -->
             <div id="step10" class="step">
-                <p id="ac-text">Нужен кондиционер?</p>
+                <p id="ac-text"><i class="fas fa-snowflake"></i> Нужен кондиционер?</p>
                 <button onclick="selectOption('ac', 'yes', 'step11')">Да / Yes</button>
                 <button onclick="selectOption('ac', 'no', 'step11')">Нет / No</button>
                 <button class="back-btn" onclick="showStep('step9')">Назад</button>
@@ -257,7 +278,7 @@
 
             <!-- Шаг 11: Как далеко от пляжа? -->
             <div id="step11" class="step">
-                <p id="beach-text">Как далеко от пляжа?</p>
+                <p id="beach-text"><i class="fas fa-umbrella-beach"></i> Как далеко от пляжа?</p>
                 <button onclick="selectOption('beach_dist', '300', 'step12')">До 300 м / Up to 300 m</button>
                 <button onclick="selectOption('beach_dist', '800', 'step12')">До 800 м / Up to 800 m</button>
                 <button onclick="selectOption('beach_dist', 'any', 'step12')">Любое / Any</button>
@@ -266,7 +287,7 @@
 
             <!-- Шаг 12: Минимальный рейтинг? -->
             <div id="step12" class="step">
-                <p id="rating-text">Минимальный рейтинг?</p>
+                <p id="rating-text"><i class="fas fa-star"></i> Минимальный рейтинг?</p>
                 <button onclick="selectOption('rating', '4.0', null, true)">4.0+</button>
                 <button onclick="selectOption('rating', '4.5', null, true)">4.5+</button>
                 <button onclick="selectOption('rating', '0', null, true)">Любой / Any</button>
