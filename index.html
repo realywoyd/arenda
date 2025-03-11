@@ -6,6 +6,7 @@
     <title>PrimeEstate Group - Поиск жилья на Пхукете</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
         body {
             font-family: 'Great Vibes', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -31,7 +32,6 @@
             padding: 20px;
             background: rgba(0, 0, 0, 0.5);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            position: relative;
         }
         .logo {
             font-size: 36px;
@@ -48,27 +48,6 @@
             color: #b0b0b0;
             margin-top: 6px;
             animation: fadeIn 1.5s ease-in-out;
-        }
-        .settings-icon {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-            color: #DAA520;
-            cursor: pointer;
-        }
-        .settings-menu {
-            display: none;
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            background: #252525;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-        .settings-menu.active {
-            display: block;
         }
         .content {
             flex: 1;
@@ -154,7 +133,7 @@
         .back-btn:hover {
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.2);
         }
-        select, input[type="date"], input[type="text"] {
+        select, input[type="date"] {
             width: 100%;
             padding: 16px;
             margin: 8px 0;
@@ -169,7 +148,7 @@
             appearance: none;
         }
         select {
-            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMTYuNDE0bC00LjI5My00LjI5M2MtLjM5MS0uMzkxLTEuMDIzLS4зOTEtMS40MTQgMCAuMzkxLjM5MS4зOTEgMS4wMjMgMCAxLjQxNGw1LjAwNyA1LjAwN2MuMzkxLjM5MSAxLjAyMy4зOTEgMS40MTQgMGw1LjAwNy01LjAwN2MuMzkxLS4зOTEuMzkxLTEuMDIzIDAtMS40MTQtLjM9MS0uMzkxLTEuMDIzLS4зOTEtMS40MTQgMGwtNC4yOTMgNC4yOTN6IiBmaWxsPSIjZTBlMGUwIi8+PC9zdmc+') no-repeat right 15px center;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMTYuNDE0bC00LjI5My00LjI5M2MtLjM5MS0uMzkxLTEuMDIzLS4зOTEtMS40MTQgMCAuMzkxLjM5MS4зOTEgMS4wMjMgMCAxLjQxNGw1LjAwNyA1LjAwN2MuMzkxLjM5MSAxLjAyMy4зOTEgMS40MTQgMGw1LjAwNy01LjAwN2MuMzkxLS4зOTEuMzkxLTEuMDIzIDAtMS40MTQtLjM5MS0uMzkxLTEuMDIzLS4зOTEtMS40MTQgMGwtNC4yOTMgNC4yOTN6IiBmaWxsPSIjZTBlMGUwIi8+PC9zdmc+') no-repeat right 15px center;
             background-size: 18px;
         }
         .recommendation {
@@ -187,11 +166,69 @@
             font-size: 18px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
+        .reviews {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #252525;
+            border-radius: 12px;
+            font-size: 18px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .guarantees {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #252525;
+            border-radius: 12px;
+            font-size: 18px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .verified {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #DAA520;
+        }
+        .about-us {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #252525;
+            border-radius: 12px;
+            font-size: 18px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .social-proof {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #DAA520;
+            color: #1a1a1a;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(218, 165, 32, 0.3);
+        }
+        .price-details {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #252525;
+            border-radius: 12px;
+            font-size: 18px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        #map {
+            height: 300px;
+            margin-top: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
         @media (max-width: 400px) {
             .logo { font-size: 32px; }
             .description { font-size: 18px; }
             p { font-size: 22px; }
-            button, select, input[type="date"], input[type="text"] { font-size: 18px; padding: 14px; }
+            button, select, input[type="date"] { font-size: 18px; padding: 14px; }
         }
     </style>
 </head>
@@ -199,20 +236,6 @@
     <div class="header">
         <div class="logo">PrimeEstate Group</div>
         <div class="description">Ваш надёжный партнёр по аренде жилья на Пхукете</div>
-        <div class="settings-icon" onclick="toggleSettingsMenu()">
-            <i class="fas fa-cog"></i>
-        </div>
-        <div class="settings-menu" id="settingsMenu">
-            <select id="lang-settings" onchange="changeLanguage()">
-                <option value="ru">Русский</option>
-                <option value="en">English</option>
-            </select>
-            <select id="currency-settings" onchange="changeCurrency()">
-                <option value="THB">THB</option>
-                <option value="USD">USD</option>
-                <option value="RUB">RUB</option>
-            </select>
-        </div>
     </div>
     <div class="content">
         <div>
@@ -220,18 +243,147 @@
                 <div class="progress"></div>
             </div>
 
-            <!-- Шаг 1: Выбери валюту -->
+            <!-- Шаг 1: Выбери язык -->
             <div id="step1" class="step active">
+                <p id="lang-text"><i class="fas fa-globe"></i> Выбери язык:</p>
+                <select id="lang">
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                </select>
+                <button id="step1-btn">Далее</button>
+            </div>
+
+            <!-- Шаг 2: Выбери валюту -->
+            <div id="step2" class="step">
                 <p id="currency-text"><i class="fas fa-coins"></i> Выбери валюту:</p>
                 <select id="currency">
                     <option value="THB">THB</option>
                     <option value="USD">USD</option>
                     <option value="RUB">RUB</option>
                 </select>
-                <button id="step1-btn">Далее</button>
+                <button id="step2-btn">Далее</button>
+                <button class="back-btn" onclick="showStep('step1')">Назад</button>
             </div>
 
-            <!-- Остальные шаги... -->
+            <!-- Шаг 3: Выбери тип жилья -->
+            <div id="step3" class="step">
+                <p id="type-text"><i class="fas fa-home"></i> Выбери тип жилья:</p>
+                <button onclick="selectOption('type', 'apartment', 'step4')"><i class="fas fa-building"></i> Квартира / Apartment</button>
+                <button onclick="selectOption('type', 'villa', 'step4')"><i class="fas fa-umbrella-beach"></i> Вилла / Villa</button>
+                <button onclick="selectOption('type', 'house', 'step4')"><i class="fas fa-house-user"></i> Дом / House</button>
+                <button class="back-btn" onclick="showStep('step2')">Назад</button>
+            </div>
+
+            <!-- Шаг 4: Укажи даты поездки -->
+            <div id="step4" class="step">
+                <p id="dates-text"><i class="fas fa-calendar-alt"></i> Укажи даты поездки:</p>
+                <input type="date" id="start_date" min="2025-03-11">
+                <input type="date" id="end_date" min="2025-03-12">
+                <button id="step4-btn">Далее</button>
+                <button class="back-btn" onclick="showStep('step3')">Назад</button>
+            </div>
+
+            <!-- Шаг 5: Выбери бюджет (THB) -->
+            <div id="step5" class="step">
+                <p id="budget-text"><i class="fas fa-wallet"></i> Выбери бюджет (THB):</p>
+                <button onclick="selectOption('budget', '15000', 'step6')">До 15,000</button>
+                <button onclick="selectOption('budget', '30000', 'step6')">15,000-30,000</button>
+                <button onclick="selectOption('budget', '40000', 'step6')">30,000+</button>
+                <button class="back-btn" onclick="showStep('step4')">Назад</button>
+            </div>
+
+            <!-- Шаг 6: Выбери район -->
+            <div id="step6" class="step">
+                <p id="area-text"><i class="fas fa-map-marker-alt"></i> Выбери район:</p>
+                <button onclick="selectOption('area', 'patong', 'step7')"><i class="fas fa-cocktail"></i> Патонг / Patong</button>
+                <button onclick="selectOption('area', 'kata', 'step7')"><i class="fas fa-umbrella-beach"></i> Ката / Kata</button>
+                <button onclick="selectOption('area', 'karon', 'step7')"><i class="fas fa-sun"></i> Карон / Karon</button>
+                <div id="area-recommendation" class="recommendation"></div>
+                <button class="back-btn" onclick="showStep('step5')">Назад</button>
+            </div>
+
+            <!-- Шаг 7: Сколько спален? -->
+            <div id="step7" class="step">
+                <p id="bedrooms-text"><i class="fas fa-bed"></i> Сколько спален?</p>
+                <button onclick="selectOption('bedrooms', '1', 'step8')">1 спальня / 1 bedroom</button>
+                <button onclick="selectOption('bedrooms', '2', 'step8')">2 спальни / 2 bedrooms</button>
+                <button onclick="selectOption('bedrooms', '3', 'step8')">3+ спальни / 3+ bedrooms</button>
+                <button class="back-btn" onclick="showStep('step6')">Назад</button>
+            </div>
+
+            <!-- Шаг 8: Нужен бассейн? -->
+            <div id="step8" class="step">
+                <p id="pool-text"><i class="fas fa-swimming-pool"></i> Нужен бассейн?</p>
+                <button onclick="selectOption('pool', 'yes', 'step9')">Да / Yes</button>
+                <button onclick="selectOption('pool', 'no', 'step9')">Нет / No</button>
+                <button class="back-btn" onclick="showStep('step7')">Назад</button>
+            </div>
+
+            <!-- Шаг 9: Нужна кухня? -->
+            <div id="step9" class="step">
+                <p id="kitchen-text"><i class="fas fa-utensils"></i> Нужна кухня?</p>
+                <button onclick="selectOption('kitchen', 'yes', 'step10')">Да / Yes</button>
+                <button onclick="selectOption('kitchen', 'no', 'step10')">Нет / No</button>
+                <button class="back-btn" onclick="showStep('step8')">Назад</button>
+            </div>
+
+            <!-- Шаг 10: Нужен кондиционер? -->
+            <div id="step10" class="step">
+                <p id="ac-text"><i class="fas fa-snowflake"></i> Нужен кондиционер?</p>
+                <button onclick="selectOption('ac', 'yes', 'step11')">Да / Yes</button>
+                <button onclick="selectOption('ac', 'no', 'step11')">Нет / No</button>
+                <button class="back-btn" onclick="showStep('step9')">Назад</button>
+            </div>
+
+            <!-- Шаг 11: Как далеко от пляжа? -->
+            <div id="step11" class="step">
+                <p id="beach-text"><i class="fas fa-umbrella-beach"></i> Как далеко от пляжа?</p>
+                <button onclick="selectOption('beach_dist', '300', 'step12')">До 300 м / Up to 300 m</button>
+                <button onclick="selectOption('beach_dist', '800', 'step12')">До 800 м / Up to 800 m</button>
+                <button onclick="selectOption('beach_dist', 'any', 'step12')">Любое / Any</button>
+                <button class="back-btn" onclick="showStep('step10')">Назад</button>
+            </div>
+
+            <!-- Шаг 12: Минимальный рейтинг? -->
+            <div id="step12" class="step">
+                <p id="rating-text"><i class="fas fa-star"></i> Минимальный рейтинг?</p>
+                <button onclick="selectOption('rating', '4.0', null, true)">4.0+</button>
+                <button onclick="selectOption('rating', '4.5', null, true)">4.5+</button>
+                <button onclick="selectOption('rating', '0', null, true)">Любой / Any</button>
+                <div id="history" class="history"></div>
+                <div class="reviews">
+                    <h3>Отзывы</h3>
+                    <div class="review">
+                        <p>Отличное жилье! ★★★★★</p>
+                        <p>— Иван, 2023</p>
+                    </div>
+                </div>
+                <div class="guarantees">
+                    <p>✅ Безопасная оплата</p>
+                    <p>✅ Гарантия возврата денег</p>
+                </div>
+                <div class="verified">
+                    <i class="fas fa-check-circle"></i> Проверено PrimeEstate Group
+                </div>
+                <div class="about-us">
+                    <h3>О нас</h3>
+                    <p>Мы работаем с 2010 года и помогли 5000+ клиентам.</p>
+                </div>
+                <div class="social-proof">
+                    <img src="media-logo1.png" alt="Media 1" style="width: 100px;">
+                    <img src="media-logo2.png" alt="Media 2" style="width: 100px;">
+                </div>
+                <div class="chat-widget">
+                    <i class="fas fa-comment"></i> Напишите нам!
+                </div>
+                <div class="price-details">
+                    <p>Цена за ночь: $100</p>
+                    <p>Уборка: $20</p>
+                    <p>Сервисный сбор: $10</p>
+                </div>
+                <div id="map"></div>
+                <button class="back-btn" onclick="showStep('step11')">Назад</button>
+            </div>
         </div>
     </div>
 
@@ -282,44 +434,54 @@
             }
         };
 
-        // Проверка авторизации через Telegram
-        function checkAuth() {
-            if (Telegram.WebApp.initDataUnsafe.user) {
-                const user = Telegram.WebApp.initDataUnsafe.user;
-                localStorage.setItem("user_id", user.id);
-                localStorage.setItem("username", user.username || user.first_name);
-                localStorage.setItem("language", user.language_code || "ru");
-                showStep("step1");
-            } else {
-                alert("Ошибка авторизации. Пожалуйста, войдите через Telegram.");
+        // Функция выбора опции
+        function selectOption(key, value, nextStepId, submit = false) {
+            searchData[key] = value;
+            if (submit) {
+                searchData.lang = document.getElementById("lang").value;
+                searchData.currency = document.getElementById("currency").value;
+                searchData.start_date = document.getElementById("start_date").value.replace(/-/g, ".");
+                searchData.end_date = document.getElementById("end_date").value.replace(/-/g, ".");
+                if (!searchData.start_date || !searchData.end_date || new Date(searchData.end_date) <= new Date(searchData.start_date)) {
+                    alert(searchData.lang === "ru" ? "Укажи корректные даты!" : "Enter valid dates!");
+                    return;
+                }
+                Telegram.WebApp.sendData(JSON.stringify(searchData));
+                Telegram.WebApp.close();
+            } else if (nextStepId) {
+                showStep(nextStepId);
             }
         }
 
-        // Переключение меню настроек
-        function toggleSettingsMenu() {
-            const settingsMenu = document.getElementById("settingsMenu");
-            settingsMenu.classList.toggle("active");
-        }
-
-        // Изменение языка
-        function changeLanguage() {
-            const lang = document.getElementById("lang-settings").value;
-            localStorage.setItem("language", lang);
-            updateLanguage();
-        }
-
-        // Изменение валюты
-        function changeCurrency() {
-            const currency = document.getElementById("currency-settings").value;
-            localStorage.setItem("currency", currency);
-            updateCurrency();
+        // Функция показа шага
+        function showStep(stepId) {
+            const currentStepElement = document.querySelector(".step.active");
+            if (currentStepElement) {
+                currentStepElement.classList.remove("active");
+            }
+            const nextStepElement = document.getElementById(stepId);
+            if (nextStepElement) {
+                nextStepElement.classList.add("active");
+                currentStep = parseInt(stepId.replace("step", ""));
+                document.querySelector(".progress").style.width = `${(currentStep / totalSteps) * 100}%`;
+                updateLanguage();
+                if (stepId === "step6") {
+                    document.getElementById("area-recommendation").textContent = langText[searchData.lang || "ru"].areaRec;
+                }
+                if (stepId === "step12") {
+                    showHistory();
+                }
+            } else {
+                alert("Ошибка: шаг не найден!");
+            }
         }
 
         // Обновление языка
         function updateLanguage() {
-            const lang = localStorage.getItem("language") || "ru";
+            const lang = document.getElementById("lang").value;
             document.querySelector(".logo").textContent = "PrimeEstate Group";
             document.querySelector(".description").textContent = langText[lang].desc;
+            document.getElementById("lang-text").textContent = langText[lang].lang;
             document.getElementById("currency-text").textContent = langText[lang].currency;
             document.getElementById("type-text").textContent = langText[lang].type;
             document.getElementById("dates-text").textContent = langText[lang].dates;
@@ -339,17 +501,40 @@
             });
         }
 
-        // Обновление валюты
-        function updateCurrency() {
-            const currency = localStorage.getItem("currency") || "THB";
-            document.getElementById("currency").value = currency;
+        // Показ истории поиска
+        function showHistory() {
+            const historyDiv = document.getElementById("history");
+            const lang = document.getElementById("lang").value;
+            if (typeof user_data !== "undefined" && Telegram.WebApp.initDataUnsafe.user) {
+                const history = user_data[String(Telegram.WebApp.initDataUnsafe.user.id)]?.last_search;
+                if (history) {
+                    historyDiv.innerHTML = `<strong>${langText[lang].history}</strong><br>${history.type} в / in ${history.area}, ${history.start_date} - ${history.end_date}`;
+                }
+            }
         }
 
-        // Инициализация
+        // Инициализация кнопок
+        document.getElementById("step1-btn").addEventListener("click", function() {
+            showStep("step2");
+        });
+        document.getElementById("step2-btn").addEventListener("click", function() {
+            showStep("step3");
+        });
+        document.getElementById("step4-btn").addEventListener("click", function() {
+            showStep("step5");
+        });
+
+        // Инициализация Telegram Web App
         Telegram.WebApp.ready();
-        checkAuth();
+        Telegram.WebApp.expand();
+        Telegram.WebApp.MainButton.hide();
+        document.getElementById("lang").addEventListener("change", updateLanguage);
         updateLanguage();
-        updateCurrency();
+
+        // Инициализация карты
+        const map = L.map('map').setView([7.8804, 98.3923], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
     </script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </body>
 </html>
