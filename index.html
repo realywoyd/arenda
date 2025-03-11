@@ -11,7 +11,6 @@
             padding: 20px;
             background-color: #f5f5f5;
             color: #333;
-            transition: all 0.3s ease;
         }
         h1 {
             font-size: 26px;
@@ -25,7 +24,6 @@
             background-color: #ddd;
             border-radius: 5px;
             margin-bottom: 20px;
-            overflow: hidden;
         }
         .progress {
             height: 100%;
@@ -34,12 +32,9 @@
         }
         .step {
             display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
         }
         .step.active {
             display: block;
-            opacity: 1;
         }
         button {
             background-color: #0088cc;
@@ -51,7 +46,6 @@
             cursor: pointer;
             width: 100%;
             font-size: 16px;
-            transition: background-color 0.2s ease;
         }
         button:hover {
             background-color: #006699;
@@ -189,6 +183,8 @@
         let searchData = {};
         let currentStep = 1;
         const totalSteps = 12;
+
+        // Объект локализации
         const langText = {
             ru: {
                 title: "Поиск жилья на Пхукете",
@@ -228,8 +224,9 @@
             }
         };
 
+        // Функция выбора опции
         function selectOption(key, value, nextStepId, submit = false) {
-            console.log(`Выбран: ${key} = ${value}, следующий шаг: ${nextStepId}`); // Отладка
+            console.log(`Выбор: ${key} = ${value}, следующий шаг: ${nextStepId}, submit: ${submit}`);
             searchData[key] = value;
             if (submit) {
                 searchData.lang = document.getElementById("lang").value;
@@ -237,31 +234,30 @@
                 searchData.start_date = document.getElementById("start_date").value.replace(/-/g, ".");
                 searchData.end_date = document.getElementById("end_date").value.replace(/-/g, ".");
                 if (!searchData.start_date || !searchData.end_date || new Date(searchData.end_date) <= new Date(searchData.start_date)) {
-                    alert(searchData.lang === "ru" ? "Укажи корректные даты! Выезд должен быть позже заезда." : "Enter valid dates! Check-out must be after check-in.");
+                    alert(searchData.lang === "ru" ? "Укажи корректные даты!" : "Enter valid dates!");
                     return;
                 }
-                console.log("Отправка данных:", searchData); // Отладка
+                console.log("Отправка данных:", JSON.stringify(searchData));
                 Telegram.WebApp.sendData(JSON.stringify(searchData));
                 Telegram.WebApp.close();
             } else if (nextStepId) {
                 nextStep(nextStepId);
-            } else {
-                console.error("Ошибка: nextStepId не указан!");
             }
         }
 
+        // Функция перехода на следующий шаг
         function nextStep(nextStepId) {
             const currentStepElement = document.querySelector(".step.active");
             if (!currentStepElement) {
-                console.error("Ошибка: текущий шаг не найден!");
+                console.error("Текущий шаг не найден!");
                 return;
             }
             const currentStepId = currentStepElement.id;
-            console.log(`Переход с ${currentStepId} на ${nextStepId}`); // Отладка
+            console.log(`Переход с ${currentStepId} на ${nextStepId}`);
             currentStepElement.classList.remove("active");
             const nextStepElement = document.getElementById(nextStepId);
             if (!nextStepElement) {
-                console.error(`Ошибка: шаг ${nextStepId} не найден!`);
+                console.error(`Шаг ${nextStepId} не найден!`);
                 return;
             }
             nextStepElement.classList.add("active");
@@ -276,8 +272,10 @@
             }
         }
 
+        // Обновление языка
         function updateLanguage() {
             const lang = document.getElementById("lang").value;
+            console.log(`Обновление языка: ${lang}`);
             document.getElementById("title").textContent = langText[lang].title;
             document.getElementById("lang-text").textContent = langText[lang].lang;
             document.getElementById("currency-text").textContent = langText[lang].currency;
@@ -298,23 +296,27 @@
             });
         }
 
+        // Показ истории поиска
         function showHistory() {
             const historyDiv = document.getElementById("history");
             const lang = document.getElementById("lang").value;
-            const history = Telegram.WebApp.initDataUnsafe.user ? user_data[String(Telegram.WebApp.initDataUnsafe.user.id)]?.last_search : null;
-            if (history) {
-                historyDiv.innerHTML = `<strong>${langText[lang].history}</strong><br>${history.type} в / in ${history.area}, ${history.start_date} - ${history.end_date}`;
+            if (typeof user_data !== "undefined" && Telegram.WebApp.initDataUnsafe.user) {
+                const history = user_data[String(Telegram.WebApp.initDataUnsafe.user.id)]?.last_search;
+                if (history) {
+                    historyDiv.innerHTML = `<strong>${langText[lang].history}</strong><br>${history.type} в / in ${history.area}, ${history.start_date} - ${history.end_date}`;
+                }
+            } else {
+                console.log("История недоступна: user_data не определён");
             }
         }
 
+        // Инициализация
+        console.log("Инициализация приложения");
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
         Telegram.WebApp.MainButton.hide();
         document.getElementById("lang").addEventListener("change", updateLanguage);
         updateLanguage();
-
-        // Отладка: проверка загрузки скрипта
-        console.log("Скрипт загружен успешно");
     </script>
 </body>
 </html>
