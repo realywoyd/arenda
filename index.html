@@ -229,6 +229,7 @@
         };
 
         function selectOption(key, value, nextStepId, submit = false) {
+            console.log(`Выбран: ${key} = ${value}, следующий шаг: ${nextStepId}`); // Отладка
             searchData[key] = value;
             if (submit) {
                 searchData.lang = document.getElementById("lang").value;
@@ -239,16 +240,31 @@
                     alert(searchData.lang === "ru" ? "Укажи корректные даты! Выезд должен быть позже заезда." : "Enter valid dates! Check-out must be after check-in.");
                     return;
                 }
+                console.log("Отправка данных:", searchData); // Отладка
                 Telegram.WebApp.sendData(JSON.stringify(searchData));
                 Telegram.WebApp.close();
-            } else {
+            } else if (nextStepId) {
                 nextStep(nextStepId);
+            } else {
+                console.error("Ошибка: nextStepId не указан!");
             }
         }
 
-        function nextStep(currentStepId, nextStepId) {
-            document.getElementById(currentStepId).classList.remove("active");
-            document.getElementById(nextStepId).classList.add("active");
+        function nextStep(nextStepId) {
+            const currentStepElement = document.querySelector(".step.active");
+            if (!currentStepElement) {
+                console.error("Ошибка: текущий шаг не найден!");
+                return;
+            }
+            const currentStepId = currentStepElement.id;
+            console.log(`Переход с ${currentStepId} на ${nextStepId}`); // Отладка
+            currentStepElement.classList.remove("active");
+            const nextStepElement = document.getElementById(nextStepId);
+            if (!nextStepElement) {
+                console.error(`Ошибка: шаг ${nextStepId} не найден!`);
+                return;
+            }
+            nextStepElement.classList.add("active");
             currentStep++;
             document.querySelector(".progress").style.width = `${(currentStep / totalSteps) * 100}%`;
             updateLanguage();
@@ -296,6 +312,9 @@
         Telegram.WebApp.MainButton.hide();
         document.getElementById("lang").addEventListener("change", updateLanguage);
         updateLanguage();
+
+        // Отладка: проверка загрузки скрипта
+        console.log("Скрипт загружен успешно");
     </script>
 </body>
 </html>
